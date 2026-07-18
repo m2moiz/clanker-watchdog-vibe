@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="390" viewBox="0 0 1200 390" role="img" aria-labelledby="title desc">
+  <title id="title">Clanker Watchdog for Vibe architecture</title>
+  <desc id="desc">Mistral Vibe invokes a permissioned native tool that delegates to Clanker Watchdog and a real browser</desc>
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#ff7000"/></marker>
+  </defs>
+  <rect width="1200" height="390" rx="24" fill="#11100f"/>
+  <text x="48" y="48" fill="#fff8ef" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="700">Native control plane</text>
+  <rect x="34" y="68" width="508" height="270" rx="22" fill="#191512" stroke="#5a3b28"/>
+  <text x="660" y="48" fill="#fff8ef" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="700">Independent verification plane</text>
+  <rect x="626" y="68" width="540" height="270" rx="22" fill="#161311" stroke="#5a3b28"/>
+  <g font-family="Inter, system-ui, sans-serif" text-anchor="middle">
+    <g transform="translate(70 124)">
+      <rect width="176" height="116" rx="18" fill="#2b160c" stroke="#ff7000"/>
+      <text x="88" y="46" fill="#ff9a52" font-size="15" font-weight="700">MISTRAL MODEL</text>
+      <text x="88" y="76" fill="#fff8ef" font-size="17">decides to verify</text>
+    </g>
+    <g transform="translate(330 124)">
+      <rect width="176" height="116" rx="18" fill="#2b160c" stroke="#ff7000"/>
+      <text x="88" y="38" fill="#ff9a52" font-size="15" font-weight="700">VIBE TOOL</text>
+      <text x="88" y="68" fill="#fff8ef" font-size="16">permission + types</text>
+      <text x="88" y="92" fill="#c8b6a8" font-size="14">timeout · cancel · UI</text>
+    </g>
+    <g transform="translate(664 124)">
+      <rect width="202" height="116" rx="18" fill="#23170f" stroke="#d96b22"/>
+      <text x="101" y="38" fill="#ff9a52" font-size="15" font-weight="700">WATCHDOG</text>
+      <text x="101" y="68" fill="#fff8ef" font-size="16">journey discovery</text>
+      <text x="101" y="92" fill="#c8b6a8" font-size="14">stable JSON envelope</text>
+    </g>
+    <g transform="translate(950 124)">
+      <rect width="176" height="116" rx="18" fill="#10271a" stroke="#45c86b"/>
+      <text x="88" y="38" fill="#69e28d" font-size="15" font-weight="700">REAL BROWSER</text>
+      <text x="88" y="68" fill="#fff8ef" font-size="16">click · type · assert</text>
+      <text x="88" y="92" fill="#b4d7bd" font-size="14">evidence + flows</text>
+    </g>
+  </g>
+  <path d="M246 182H320" stroke="#ff7000" stroke-width="4" marker-end="url(#a)"/>
+  <path d="M506 182H654" stroke="#ff7000" stroke-width="4" marker-end="url(#a)"/>
+  <path d="M866 182H940" stroke="#ff7000" stroke-width="4" marker-end="url(#a)"/>
+  <path d="M1040 254C1040 305 418 305 418 250" fill="none" stroke="#45c86b" stroke-width="3" stroke-dasharray="8 7" marker-end="url(#a)"/>
+  <text x="730" y="300" text-anchor="middle" fill="#9edcaf" font-family="ui-monospace, monospace" font-size="14">verdict · findings · evidence · generated tests</text>
+</svg>
