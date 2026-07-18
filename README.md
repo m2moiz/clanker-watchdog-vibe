@@ -4,6 +4,10 @@ React prototype of an AI-powered application analysis platform. The AI "explores
 
 Data is stored in **Supabase** (Postgres) when configured, with a local mock fallback for development without credentials. The example app under analysis is a fictional e-commerce app, **ShopFlow**.
 
+## Related projects
+
+- **[autoend](https://github.com/bonyadnouri/autoend)** — CLI that runs agent-powered e2e tests and publishes results to this dashboard.
+
 ## Stack
 
 - Vite + React + TypeScript
