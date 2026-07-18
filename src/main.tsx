@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 import "@xyflow/react/dist/style.css";
 import "./index.css";
 import { Layout } from "./components/Layout";
@@ -25,9 +25,10 @@ const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
-      { path: "/", element: <Dashboard /> },
+      { path: "/", element: <AppMap /> },
+      { path: "/dashboard", element: <Dashboard /> },
       { path: "/exploration", element: <Exploration /> },
-      { path: "/map", element: <AppMap /> },
+      { path: "/map", element: <Navigate to="/" replace /> },
       { path: "/screens/:id", element: <ScreenDetails /> },
       { path: "/journeys", element: <Journeys /> },
       { path: "/journeys/:id", element: <JourneyDetails /> },

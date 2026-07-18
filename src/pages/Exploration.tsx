@@ -89,7 +89,7 @@ export function Exploration() {
               <button className="btn-secondary" onClick={restart}>
                 <RotateCcw size={16} /> Re-run
               </button>
-              <Link to="/map" className="btn-primary">
+              <Link to="/" className="btn-primary">
                 <Network size={16} /> View application map
               </Link>
             </>

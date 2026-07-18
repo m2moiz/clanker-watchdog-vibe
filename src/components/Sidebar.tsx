@@ -20,11 +20,11 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { to: "/", label: "Dashboard", icon: LayoutDashboard, end: true },
+  { to: "/", label: "Application Map", icon: Network, end: true },
+  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   // TEMPORARY: quick access to the standalone launch flow; remove when no longer needed.
   { to: "/start", label: "Start Analysis", icon: Rocket },
   { to: "/exploration", label: "AI Exploration", icon: Radar },
-  { to: "/map", label: "Application Map", icon: Network },
   { to: "/journeys", label: "User Journeys", icon: Route },
   { to: "/tests", label: "Test Scenarios", icon: ListChecks },
   { to: "/insights", label: "AI Insights", icon: Lightbulb },

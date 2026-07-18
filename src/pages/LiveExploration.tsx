@@ -88,7 +88,7 @@ export function LiveExploration() {
 
   useEffect(() => {
     if (phase !== "done") return;
-    const t = window.setTimeout(() => navigate("/map"), 4000);
+    const t = window.setTimeout(() => navigate("/"), 4000);
     return () => window.clearTimeout(t);
   }, [phase, navigate]);
 
@@ -244,7 +244,7 @@ export function LiveExploration() {
                   the application map...
                 </p>
                 <button
-                  onClick={() => navigate("/map")}
+                  onClick={() => navigate("/")}
                   className="btn-primary group mt-5"
                 >
                   Open Application Map

@@ -45,10 +45,10 @@ export function ScreenDetails() {
       <PageHeader
         title={screen.name}
         subtitle={screen.description}
-        backTo="/map"
+        backTo="/"
         breadcrumb={
           <span>
-            <Link to="/map" className="hover:text-slate-700">
+            <Link to="/" className="hover:text-slate-700">
               Application Map
             </Link>{" "}
             / {screen.name}

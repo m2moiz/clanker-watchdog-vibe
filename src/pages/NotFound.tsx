@@ -12,7 +12,7 @@ export function NotFound() {
         The screen you are looking for is not part of the analyzed map.
       </p>
       <Link to="/" className="btn-primary mt-6">
-        Back to Dashboard
+        Back to Application Map
       </Link>
     </div>
   );

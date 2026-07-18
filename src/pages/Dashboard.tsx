@@ -40,7 +40,7 @@ export function Dashboard() {
         subtitle={`Analyzed ${formatDateTime(appSummary.analyzedAt)} - viewing as ${roleLabels[role]}. ${roleFocus[role]}`}
         actions={
           <>
-            <Link to="/map" className="btn-secondary">
+            <Link to="/" className="btn-secondary">
               <Network size={16} /> View map
             </Link>
             <button className="btn-primary" onClick={() => navigate("/start")}>
@@ -56,7 +56,7 @@ export function Dashboard() {
           value={appSummary.screensDiscovered}
           icon={Layers}
           hint="Across all entry points"
-          onClick={() => navigate("/map")}
+          onClick={() => navigate("/")}
         />
         <MetricCard
           label="User flows"
