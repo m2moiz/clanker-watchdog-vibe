@@ -215,6 +215,12 @@ experimental_bash_tool = true
 # Per-tool configuration
 [tools.bash]
 allowlist = ["git", "npm", "python"]
+
+# Native browser acceptance verification through Clanker Watchdog
+[tools.verify_web_app]
+executable = "clanker-watchdog"
+default_effort = "mid"
+timeout_seconds = 900
 ```
 
 The built-in `bash` tool runs one-off shell commands by default. Set
