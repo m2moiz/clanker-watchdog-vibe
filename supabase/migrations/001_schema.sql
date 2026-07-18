@@ -1,6 +1,6 @@
 -- Lumen analysis schema (hackathon demo — open RLS policies)
 
-CREATE TABLE analyses (
+CREATE TABLE IF NOT EXISTS analyses (
   id TEXT PRIMARY KEY,
   app_name TEXT NOT NULL,
   app_url TEXT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE analyses (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE TABLE screens (
+CREATE TABLE IF NOT EXISTS screens (
   id TEXT NOT NULL,
   analysis_id TEXT NOT NULL REFERENCES analyses(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE screens (
   PRIMARY KEY (analysis_id, id)
 );
 
-CREATE TABLE screen_edges (
+CREATE TABLE IF NOT EXISTS screen_edges (
   id TEXT NOT NULL,
   analysis_id TEXT NOT NULL REFERENCES analyses(id) ON DELETE CASCADE,
   source TEXT NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE screen_edges (
   PRIMARY KEY (analysis_id, id)
 );
 
-CREATE TABLE journeys (
+CREATE TABLE IF NOT EXISTS journeys (
   id TEXT NOT NULL,
   analysis_id TEXT NOT NULL REFERENCES analyses(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE journeys (
   PRIMARY KEY (analysis_id, id)
 );
 
-CREATE TABLE tests (
+CREATE TABLE IF NOT EXISTS tests (
   id TEXT NOT NULL,
   analysis_id TEXT NOT NULL REFERENCES analyses(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE tests (
   PRIMARY KEY (analysis_id, id)
 );
 
-CREATE TABLE issues (
+CREATE TABLE IF NOT EXISTS issues (
   id TEXT NOT NULL,
   analysis_id TEXT NOT NULL REFERENCES analyses(id) ON DELETE CASCADE,
   title TEXT NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE issues (
   PRIMARY KEY (analysis_id, id)
 );
 
-CREATE TABLE insights (
+CREATE TABLE IF NOT EXISTS insights (
   id TEXT NOT NULL,
   analysis_id TEXT NOT NULL REFERENCES analyses(id) ON DELETE CASCADE,
   title TEXT NOT NULL,
@@ -103,18 +103,18 @@ CREATE TABLE insights (
   PRIMARY KEY (analysis_id, id)
 );
 
-CREATE TABLE investigations (
+CREATE TABLE IF NOT EXISTS investigations (
   analysis_id TEXT NOT NULL REFERENCES analyses(id) ON DELETE CASCADE,
   test_id TEXT NOT NULL,
   payload JSONB NOT NULL,
   PRIMARY KEY (analysis_id, test_id)
 );
 
-CREATE INDEX idx_screens_analysis ON screens(analysis_id);
-CREATE INDEX idx_journeys_analysis ON journeys(analysis_id);
-CREATE INDEX idx_tests_analysis ON tests(analysis_id);
-CREATE INDEX idx_issues_analysis ON issues(analysis_id);
-CREATE INDEX idx_insights_analysis ON insights(analysis_id);
+CREATE INDEX IF NOT EXISTS idx_screens_analysis ON screens(analysis_id);
+CREATE INDEX IF NOT EXISTS idx_journeys_analysis ON journeys(analysis_id);
+CREATE INDEX IF NOT EXISTS idx_tests_analysis ON tests(analysis_id);
+CREATE INDEX IF NOT EXISTS idx_issues_analysis ON issues(analysis_id);
+CREATE INDEX IF NOT EXISTS idx_insights_analysis ON insights(analysis_id);
 
 ALTER TABLE analyses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE screens ENABLE ROW LEVEL SECURITY;
@@ -125,11 +125,29 @@ ALTER TABLE issues ENABLE ROW LEVEL SECURITY;
 ALTER TABLE insights ENABLE ROW LEVEL SECURITY;
 ALTER TABLE investigations ENABLE ROW LEVEL SECURITY;
 
+-- Postgres CREATE POLICY has no IF NOT EXISTS, so drop-then-create keeps this
+-- migration idempotent (safe to re-run).
+
+DROP POLICY IF EXISTS "anon_all_analyses" ON analyses;
 CREATE POLICY "anon_all_analyses" ON analyses FOR ALL TO anon USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "anon_all_screens" ON screens;
 CREATE POLICY "anon_all_screens" ON screens FOR ALL TO anon USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "anon_all_screen_edges" ON screen_edges;
 CREATE POLICY "anon_all_screen_edges" ON screen_edges FOR ALL TO anon USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "anon_all_journeys" ON journeys;
 CREATE POLICY "anon_all_journeys" ON journeys FOR ALL TO anon USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "anon_all_tests" ON tests;
 CREATE POLICY "anon_all_tests" ON tests FOR ALL TO anon USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "anon_all_issues" ON issues;
 CREATE POLICY "anon_all_issues" ON issues FOR ALL TO anon USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "anon_all_insights" ON insights;
 CREATE POLICY "anon_all_insights" ON insights FOR ALL TO anon USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "anon_all_investigations" ON investigations;
 CREATE POLICY "anon_all_investigations" ON investigations FOR ALL TO anon USING (true) WITH CHECK (true);
