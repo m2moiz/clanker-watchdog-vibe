@@ -12,9 +12,14 @@ import { formatDuration } from "../data/helpers";
 import { useAnalysisData } from "../context/AnalysisDataContext";
 import { useUpdateTestStatus } from "../hooks/mutations";
 import { isSupabaseConfigured } from "../lib/supabase";
+import { startRun } from "../lib/runs";
+import { useAnalysis } from "../context/AnalysisContext";
+import { useNavigate } from "react-router-dom";
 
 export function TestDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { analysisId } = useAnalysis();
   const { getTest, getJourney, getIssue, getScreen, getInvestigation } = useAnalysisData();
   const updateTest = useUpdateTestStatus();
   const test = id ? getTest(id) : undefined;
@@ -27,15 +32,16 @@ export function TestDetails() {
   const showInvestigation = Boolean(investigation);
   const analysis = investigation?.analysis;
 
-  function handleRerun() {
+  async function handleRerun() {
     if (!test) return;
     if (isSupabaseConfigured) {
-      updateTest.mutate({
-        testId: test.id,
-        status: "not-executed",
-        actualResult: "",
-        durationMs: 0,
-      });
+      try {
+        await startRun({ analysisId, kind: "single-test", testId: test.id });
+        navigate("/");
+      } catch (err) {
+        console.error(err);
+        alert("Could not queue test re-run. Is autoend serve running?");
+      }
     } else {
       alert(`Re-running ${test.id} (mock only — configure Supabase to persist)`);
     }
