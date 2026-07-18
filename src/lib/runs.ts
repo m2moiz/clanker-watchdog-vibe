@@ -108,7 +108,6 @@ export function useActiveRun(analysisId: string) {
 }
 
 export function useRunEvents(runId: string | undefined) {
-  const queryClient = useQueryClient();
   const [events, setEvents] = useState<RunEventRow[]>([]);
 
   const query = useQuery({
@@ -138,7 +137,7 @@ export function useRunEvents(runId: string | undefined) {
     return () => {
       void client.removeChannel(channel);
     };
-  }, [runId, queryClient]);
+  }, [runId]);
 
   return { events, isLoading: query.isLoading };
 }
