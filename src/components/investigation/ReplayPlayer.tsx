@@ -23,6 +23,20 @@ export function ReplayPlayer({ replay, playheadMs, playing, onTogglePlay, onSeek
   }
 
   const frames = replay.frames;
+  if (frames.length === 0) {
+    return (
+      <div className="card overflow-hidden">
+        <div className="flex items-center gap-2 border-b border-slate-100 px-4 py-2.5">
+          <Video size={15} className="text-slate-400" />
+          <span className="text-sm font-semibold text-slate-900">Test replay</span>
+        </div>
+        <div className="grid aspect-video place-items-center bg-slate-900 text-sm text-slate-400">
+          No replay recording available for this test.
+        </div>
+      </div>
+    );
+  }
+
   const activeIndex = Math.max(
     0,
     frames.reduce((acc, f, i) => (f.tMs <= playheadMs ? i : acc), 0),

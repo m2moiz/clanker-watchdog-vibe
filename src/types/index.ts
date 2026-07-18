@@ -137,6 +137,8 @@ export interface EvidenceShot {
   screenId: string;
   caption: string;
   tMs: number;
+  /** When set, a real screenshot is rendered instead of the placeholder. */
+  imageUrl?: string | null;
 }
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";

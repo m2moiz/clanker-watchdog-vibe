@@ -42,7 +42,15 @@ export function EvidencePackage({
                 <span className="font-mono text-[10px] text-slate-400">{formatClock(shot.tMs)}</span>
               </div>
               <div className="overflow-hidden rounded-lg ring-1 ring-transparent transition-all group-hover:ring-brand-200">
-                {screen && <ScreenshotPlaceholder name={screen.name} accent={screen.accent} />}
+                {shot.imageUrl ? (
+                  <img
+                    src={shot.imageUrl}
+                    alt={shot.caption}
+                    className="aspect-video w-full bg-slate-100 object-cover"
+                  />
+                ) : screen ? (
+                  <ScreenshotPlaceholder name={screen.name} accent={screen.accent} />
+                ) : null}
               </div>
               <p className="mt-2 text-xs text-slate-500">{shot.caption}</p>
             </button>
