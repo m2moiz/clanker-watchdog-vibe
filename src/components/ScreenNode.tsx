@@ -13,7 +13,7 @@ import {
   AlertTriangle,
   XCircle,
 } from "lucide-react";
-import type { JourneyStatus } from "../types";
+import type { ScreenStatus } from "../types";
 
 const iconMap: Record<string, typeof Home> = {
   login: LogIn,
@@ -32,7 +32,7 @@ export interface ScreenNodeData {
   screenId: string;
   name: string;
   type: string;
-  status: JourneyStatus;
+  status: ScreenStatus;
   isEntryPoint: boolean;
   elementCount: number;
   issueCount: number;
@@ -41,16 +41,24 @@ export interface ScreenNodeData {
   [key: string]: unknown;
 }
 
-const statusRing: Record<JourneyStatus, string> = {
+const statusRing: Record<ScreenStatus, string> = {
   healthy: "border-slate-200",
   warning: "border-status-warn/40",
   broken: "border-status-fail/50",
+  running: "border-cyan-400 animate-pulse",
+  passed: "border-emerald-400",
+  failed: "border-red-500",
+  discovered: "border-dashed border-slate-300",
 };
 
-const statusDot: Record<JourneyStatus, string> = {
+const statusDot: Record<ScreenStatus, string> = {
   healthy: "bg-status-pass",
   warning: "bg-status-warn",
   broken: "bg-status-fail",
+  running: "bg-cyan-400 animate-pulse",
+  passed: "bg-emerald-500",
+  failed: "bg-red-500",
+  discovered: "bg-slate-300",
 };
 
 export function ScreenNode({ data, selected }: NodeProps) {

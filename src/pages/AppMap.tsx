@@ -13,9 +13,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, LogIn, Layers, X } from "lucide-react";
 import { PageHeader } from "../components/PageHeader";
+import { RunBanner } from "../components/RunBanner";
 import { ScreenNode, type ScreenNodeData } from "../components/ScreenNode";
 import { JourneyStatusBadge } from "../components/StatusBadge";
+import { useAnalysis } from "../context/AnalysisContext";
 import { useAnalysisData } from "../context/AnalysisDataContext";
+import { useActiveRun, useLiveRunSync } from "../lib/runs";
+import { isSupabaseConfigured } from "../lib/supabase";
 
 const nodeTypes = { screen: ScreenNode };
 
@@ -27,7 +31,11 @@ const edgeColor: Record<string, string> = {
 
 export function AppMap() {
   const navigate = useNavigate();
+  const { analysisId } = useAnalysis();
   const { screens, screenEdges, journeys, getJourney, getScreen } = useAnalysisData();
+  const activeRunQuery = useActiveRun(analysisId);
+  const activeRun = isSupabaseConfigured ? activeRunQuery.data : null;
+  useLiveRunSync(analysisId, Boolean(activeRun && (activeRun.status === "queued" || activeRun.status === "running")));
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [journeyFilter, setJourneyFilter] = useState<string>("all");
 
@@ -143,6 +151,8 @@ export function AppMap() {
           </div>
         }
       />
+
+      {activeRun && <RunBanner run={activeRun} showConsole />}
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
         <div className="relative lg:col-span-3">

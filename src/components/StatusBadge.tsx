@@ -7,7 +7,7 @@ import {
   Sparkles,
   CircleDot,
 } from "lucide-react";
-import type { JourneyStatus, TestStatus } from "../types";
+import type { JourneyStatus, ScreenStatus, TestStatus } from "../types";
 import { journeyStatusLabel, testStatusLabel } from "../data/helpers";
 
 const base = "pill";
@@ -27,7 +27,27 @@ export function TestStatusBadge({ status }: { status: TestStatus }) {
   );
 }
 
-export function JourneyStatusBadge({ status }: { status: JourneyStatus }) {
+const liveStatusLabel: Record<Exclude<ScreenStatus, JourneyStatus>, string> = {
+  running: "Running",
+  passed: "Passed",
+  failed: "Failed",
+  discovered: "Discovered",
+};
+
+export function JourneyStatusBadge({ status }: { status: ScreenStatus }) {
+  if (status === "running" || status === "passed" || status === "failed" || status === "discovered") {
+    const map: Record<typeof status, string> = {
+      running: "bg-cyan-50 text-cyan-700",
+      passed: "bg-status-passBg text-status-pass",
+      failed: "bg-status-failBg text-status-fail",
+      discovered: "bg-slate-100 text-slate-600",
+    };
+    return (
+      <span className={`${base} ${map[status]}`}>
+        {liveStatusLabel[status]}
+      </span>
+    );
+  }
   const map: Record<JourneyStatus, string> = {
     healthy: "bg-status-passBg text-status-pass",
     warning: "bg-status-warnBg text-status-warn",

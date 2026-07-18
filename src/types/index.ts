@@ -1,5 +1,7 @@
 export type TestStatus = "pass" | "fail" | "not-executed";
 export type JourneyStatus = "healthy" | "warning" | "broken";
+export type ScreenRunStatus = "running" | "passed" | "failed" | "discovered";
+export type ScreenStatus = JourneyStatus | ScreenRunStatus;
 export type Severity = "critical" | "high" | "medium" | "low";
 export type UserRole = "qa" | "developer" | "product-owner";
 
@@ -52,7 +54,7 @@ export interface Screen {
   description: string;
   /** Layout position for the application map graph. */
   position: { x: number; y: number };
-  status: JourneyStatus;
+  status: ScreenStatus;
   isEntryPoint: boolean;
   elements: InteractiveElement[];
   navigation: NavigationOption[];

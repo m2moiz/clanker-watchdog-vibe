@@ -15,6 +15,8 @@ import type { ExploreOptions } from "../types";
 import { useAnalysisData } from "../context/AnalysisDataContext";
 import { useCreateAnalysis } from "../hooks/mutations";
 import { isSupabaseConfigured } from "../lib/supabase";
+import { startRun } from "../lib/runs";
+import { useAnalysis } from "../context/AnalysisContext";
 import { SupabaseSetupBanner } from "../components/SupabaseSetupBanner";
 
 const steps = [
@@ -34,25 +36,33 @@ const defaultOptions: ExploreOptions = {
 
 export function StartAnalysis() {
   const navigate = useNavigate();
+  const { analysisId } = useAnalysis();
   const { appSummary } = useAnalysisData();
   const createAnalysis = useCreateAnalysis();
   const [target, setTarget] = useState(appSummary.appUrl);
+  const [starting, setStarting] = useState(false);
 
   async function start() {
     const value = target.trim();
     if (!value) return;
+    setStarting(true);
 
     if (isSupabaseConfigured) {
       try {
         await createAnalysis.mutateAsync({ appUrl: value });
+        await startRun({ analysisId, kind: "full", targetUrl: value });
+        navigate("/");
+        return;
       } catch (err) {
         console.error(err);
-        alert("Could not create analysis. Check Supabase setup and try again.");
+        alert("Could not start analysis. Check Supabase setup and autoend serve daemon.");
+        setStarting(false);
         return;
       }
     }
 
     navigate("/exploring", { state: { target: value, options: defaultOptions } });
+    setStarting(false);
   }
 
   return (
@@ -100,7 +110,7 @@ export function StartAnalysis() {
 
           <button
             onClick={() => void start()}
-            disabled={!target.trim() || createAnalysis.isPending}
+            disabled={!target.trim() || createAnalysis.isPending || starting}
             className="btn-primary group mt-3 w-full py-3.5"
           >
             Start Exploration
