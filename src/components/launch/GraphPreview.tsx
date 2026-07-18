@@ -23,7 +23,7 @@ import {
   UserPlus,
   Circle,
 } from "lucide-react";
-import { screens, screenEdges } from "../../data/mockData";
+import { useAnalysisData } from "../../context/AnalysisDataContext";
 
 const iconMap: Record<string, typeof Home> = {
   login: LogIn,
@@ -75,6 +75,7 @@ interface Props {
 }
 
 export function GraphPreview({ revealedIds, activeId }: Props) {
+  const { screens, screenEdges } = useAnalysisData();
   const revealedSet = useMemo(() => new Set(revealedIds), [revealedIds]);
 
   const nodes: Node[] = useMemo(

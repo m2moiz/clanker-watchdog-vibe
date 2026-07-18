@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Route as RouteIcon } from "lucide-react";
 import { PageHeader } from "../components/PageHeader";
 import { JourneyStatusBadge } from "../components/StatusBadge";
-import { journeys, tests } from "../data/mockData";
-import { getScreen } from "../data/helpers";
+import { useAnalysisData } from "../context/AnalysisDataContext";
 
 export function Journeys() {
+  const { journeys, tests, getScreen } = useAnalysisData();
   return (
     <div>
       <PageHeader

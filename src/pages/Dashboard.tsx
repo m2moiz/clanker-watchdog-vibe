@@ -15,13 +15,14 @@ import { PageHeader } from "../components/PageHeader";
 import { MetricCard } from "../components/MetricCard";
 import { JourneyStatusBadge } from "../components/StatusBadge";
 import { SeverityBadge } from "../components/SeverityBadge";
-import { appSummary, issues, journeys } from "../data/mockData";
 import { formatDateTime, severityRank } from "../data/helpers";
+import { useAnalysisData } from "../context/AnalysisDataContext";
 import { roleLabels, useRole } from "../context/RoleContext";
 
 export function Dashboard() {
   const navigate = useNavigate();
   const { role } = useRole();
+  const { appSummary, issues, journeys } = useAnalysisData();
 
   const topIssues = [...issues]
     .sort((a, b) => severityRank[a.severity] - severityRank[b.severity])

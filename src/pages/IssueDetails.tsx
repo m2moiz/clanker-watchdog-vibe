@@ -12,23 +12,39 @@ import { SeverityBadge } from "../components/SeverityBadge";
 import { TestStatusBadge } from "../components/StatusBadge";
 import { ScreenshotPlaceholder } from "../components/ScreenshotPlaceholder";
 import { NotFound } from "./NotFound";
-import { getIssue, getJourney, getScreen, getTest } from "../data/helpers";
+import { useAnalysisData } from "../context/AnalysisDataContext";
+import { useUpdateIssueStatus } from "../hooks/mutations";
+import type { Issue } from "../types";
+import { isSupabaseConfigured } from "../lib/supabase";
 
-const statusLabel: Record<string, { label: string; cls: string }> = {
+const statusLabel: Record<Issue["status"], { label: string; cls: string }> = {
   open: { label: "Open", cls: "bg-status-failBg text-status-fail" },
   acknowledged: { label: "Acknowledged", cls: "bg-status-warnBg text-status-warn" },
   resolved: { label: "Resolved", cls: "bg-status-passBg text-status-pass" },
 };
 
+const statusOptions: Issue["status"][] = ["open", "acknowledged", "resolved"];
+
 export function IssueDetails() {
   const { id } = useParams();
+  const { getIssue, getJourney, getScreen, getTest } = useAnalysisData();
+  const updateStatus = useUpdateIssueStatus();
   const issue = id ? getIssue(id) : undefined;
   if (!issue) return <NotFound />;
 
   const screen = getScreen(issue.relatedScreenId);
   const journey = issue.relatedJourneyId ? getJourney(issue.relatedJourneyId) : undefined;
-  const relatedTests = issue.relatedTestIds.map(getTest).filter((t) => t);
+  const relatedTests = issue.relatedTestIds.map((tid) => getTest(tid)).filter((t) => t);
   const st = statusLabel[issue.status];
+
+  function changeStatus(status: Issue["status"]) {
+    if (!issue) return;
+    if (!isSupabaseConfigured) {
+      alert(`Status change to "${status}" requires Supabase configuration.`);
+      return;
+    }
+    updateStatus.mutate({ issueId: issue.id, status });
+  }
 
   return (
     <div>
@@ -100,6 +116,27 @@ export function IssueDetails() {
         </div>
 
         <div className="space-y-6">
+          <section className="card p-5">
+            <span className="section-title">Update status</span>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {statusOptions.map((status) => (
+                <button
+                  key={status}
+                  type="button"
+                  disabled={issue.status === status || updateStatus.isPending}
+                  onClick={() => changeStatus(status)}
+                  className={`pill text-xs font-semibold transition-opacity ${
+                    issue.status === status
+                      ? statusLabel[status].cls
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  } disabled:opacity-50`}
+                >
+                  {statusLabel[status].label}
+                </button>
+              ))}
+            </div>
+          </section>
+
           <section className="card p-5">
             <span className="section-title">Context</span>
             <div className="mt-3 space-y-2">

@@ -15,8 +15,7 @@ import { ArrowRight, LogIn, Layers, X } from "lucide-react";
 import { PageHeader } from "../components/PageHeader";
 import { ScreenNode, type ScreenNodeData } from "../components/ScreenNode";
 import { JourneyStatusBadge } from "../components/StatusBadge";
-import { journeys, screenEdges, screens } from "../data/mockData";
-import { getJourney, getScreen } from "../data/helpers";
+import { useAnalysisData } from "../context/AnalysisDataContext";
 
 const nodeTypes = { screen: ScreenNode };
 
@@ -28,6 +27,7 @@ const edgeColor: Record<string, string> = {
 
 export function AppMap() {
   const navigate = useNavigate();
+  const { screens, screenEdges, journeys, getJourney, getScreen } = useAnalysisData();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [journeyFilter, setJourneyFilter] = useState<string>("all");
 
@@ -35,7 +35,7 @@ export function AppMap() {
     if (journeyFilter === "all") return null;
     const j = getJourney(journeyFilter);
     return j ? new Set(j.steps.map((s) => s.screenId)) : null;
-  }, [journeyFilter]);
+  }, [journeyFilter, getJourney]);
 
   const journeyEdgeKeys = useMemo(() => {
     if (journeyFilter === "all") return null;
@@ -46,7 +46,7 @@ export function AppMap() {
       keys.add(`${j.steps[i].screenId}->${j.steps[i + 1].screenId}`);
     }
     return keys;
-  }, [journeyFilter]);
+  }, [journeyFilter, getJourney]);
 
   const nodes: Node[] = useMemo(
     () =>

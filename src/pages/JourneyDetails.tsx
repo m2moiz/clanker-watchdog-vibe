@@ -3,10 +3,11 @@ import { ArrowRight, ListChecks } from "lucide-react";
 import { PageHeader } from "../components/PageHeader";
 import { JourneyStatusBadge, TestStatusBadge } from "../components/StatusBadge";
 import { NotFound } from "./NotFound";
-import { getJourney, getScreen, getTest } from "../data/helpers";
+import { useAnalysisData } from "../context/AnalysisDataContext";
 
 export function JourneyDetails() {
   const { id } = useParams();
+  const { getJourney, getScreen, getTest } = useAnalysisData();
   const journey = id ? getJourney(id) : undefined;
   if (!journey) return <NotFound />;
 

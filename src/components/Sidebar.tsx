@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import { appSummary } from "../data/mockData";
+import { useAnalysisData } from "../context/AnalysisDataContext";
 
 interface NavItem {
   to: string;
@@ -31,6 +31,7 @@ const navItems: NavItem[] = [
 ];
 
 export function Sidebar() {
+  const { appSummary } = useAnalysisData();
   return (
     <aside className="flex h-full w-64 shrink-0 flex-col border-r border-slate-200 bg-white">
       <div className="flex items-center gap-2.5 px-5 py-5">

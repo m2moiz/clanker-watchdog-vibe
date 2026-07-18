@@ -8,26 +8,38 @@ import { InvestigationView } from "../components/investigation/InvestigationView
 import { EnvironmentDetails } from "../components/investigation/EnvironmentDetails";
 import { ExportMenu } from "../components/investigation/ExportMenu";
 import { NotFound } from "./NotFound";
-import {
-  formatDuration,
-  getInvestigation,
-  getIssue,
-  getJourney,
-  getScreen,
-  getTest,
-} from "../data/helpers";
+import { formatDuration } from "../data/helpers";
+import { useAnalysisData } from "../context/AnalysisDataContext";
+import { useUpdateTestStatus } from "../hooks/mutations";
+import { isSupabaseConfigured } from "../lib/supabase";
 
 export function TestDetails() {
   const { id } = useParams();
+  const { getTest, getJourney, getIssue, getScreen, getInvestigation } = useAnalysisData();
+  const updateTest = useUpdateTestStatus();
   const test = id ? getTest(id) : undefined;
   if (!test) return <NotFound />;
 
   const journey = getJourney(test.journeyId);
-  const relatedIssues = test.relatedIssueIds.map(getIssue).filter((i) => i);
+  const relatedIssues = test.relatedIssueIds.map((iid) => getIssue(iid)).filter((i) => i);
   const failed = test.status === "fail";
   const investigation = getInvestigation(test.id);
   const showInvestigation = Boolean(investigation);
   const analysis = investigation?.analysis;
+
+  function handleRerun() {
+    if (!test) return;
+    if (isSupabaseConfigured) {
+      updateTest.mutate({
+        testId: test.id,
+        status: "not-executed",
+        actualResult: "",
+        durationMs: 0,
+      });
+    } else {
+      alert(`Re-running ${test.id} (mock only — configure Supabase to persist)`);
+    }
+  }
 
   return (
     <div>
@@ -51,7 +63,12 @@ export function TestDetails() {
           <>
             <TestStatusBadge status={test.status} />
             {analysis && <ConfidenceMeter value={analysis.confidence} size="sm" />}
-            <button className="btn-secondary" onClick={() => alert(`Re-running ${test.id} (mock)`)}>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={handleRerun}
+              disabled={updateTest.isPending}
+            >
               <RotateCcw size={16} /> Re-run
             </button>
             {investigation && <ExportMenu test={test} investigation={investigation} />}

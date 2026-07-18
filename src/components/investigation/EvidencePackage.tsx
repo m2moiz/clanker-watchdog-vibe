@@ -1,6 +1,7 @@
 import { Camera } from "lucide-react";
 import type { EvidenceShot } from "../../types";
-import { getScreen, formatClock } from "../../data/helpers";
+import { formatClock } from "../../data/helpers";
+import { useAnalysisData } from "../../context/AnalysisDataContext";
 import { ScreenshotPlaceholder } from "../ScreenshotPlaceholder";
 
 const labelTone: Record<string, string> = {
@@ -16,6 +17,7 @@ export function EvidencePackage({
   evidence: EvidenceShot[];
   onSeek?: (ms: number) => void;
 }) {
+  const { getScreen } = useAnalysisData();
   return (
     <section className="card p-5">
       <div className="mb-4 flex items-center gap-2">

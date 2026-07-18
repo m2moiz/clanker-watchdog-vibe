@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 import { CheckCircle2, XCircle, MinusCircle, RotateCcw, Search } from "lucide-react";
 import { PageHeader } from "../components/PageHeader";
 import { TestStatusBadge } from "../components/StatusBadge";
-import { journeys, tests } from "../data/mockData";
-import { formatDuration, getInvestigation, getJourney } from "../data/helpers";
+import { formatDuration } from "../data/helpers";
 import type { TestStatus } from "../types";
+import { useAnalysisData } from "../context/AnalysisDataContext";
 import { useRole } from "../context/RoleContext";
 
 type StatusFilter = "all" | TestStatus;
 
 export function TestScenarios() {
   const { role } = useRole();
+  const { journeys, tests, getInvestigation, getJourney } = useAnalysisData();
   const [status, setStatus] = useState<StatusFilter>(
     role === "developer" ? "fail" : "all",
   );
@@ -24,7 +25,7 @@ export function TestScenarios() {
           (status === "all" || t.status === status) &&
           (journeyId === "all" || t.journeyId === journeyId),
       ),
-    [status, journeyId],
+    [status, journeyId, tests],
   );
 
   const counts = {

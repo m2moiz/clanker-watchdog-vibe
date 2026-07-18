@@ -16,13 +16,7 @@ import {
   Terminal,
 } from "lucide-react";
 import type { ExploreLaunchState } from "../types";
-import {
-  explorationLog,
-  explorationScreenOrder,
-  journeys,
-  screens,
-} from "../data/mockData";
-import { getScreen } from "../data/helpers";
+import { useAnalysisData } from "../context/AnalysisDataContext";
 import { GraphPreview } from "../components/launch/GraphPreview";
 
 type Phase = "connecting" | "scanning" | "building" | "done";
@@ -45,6 +39,8 @@ const phaseRank: Record<Phase, number> = {
 export function LiveExploration() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { explorationLog, explorationScreenOrder, journeys, screens, getScreen } =
+    useAnalysisData();
   const launch = location.state as ExploreLaunchState | null;
   const target = launch?.target ?? "https://demo.shopflow.app";
   const options = launch?.options;

@@ -1,9 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 import "@xyflow/react/dist/style.css";
 import "./index.css";
 import { Layout } from "./components/Layout";
+import { AnalysisProvider } from "./context/AnalysisContext";
+import { AnalysisDataProvider } from "./context/AnalysisDataContext";
 import { RoleProvider } from "./context/RoleContext";
 import { Dashboard } from "./pages/Dashboard";
 import { Exploration } from "./pages/Exploration";
@@ -41,10 +44,22 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { retry: 1 },
+  },
+});
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RoleProvider>
-      <RouterProvider router={router} />
-    </RoleProvider>
+    <QueryClientProvider client={queryClient}>
+      <AnalysisProvider>
+        <AnalysisDataProvider>
+          <RoleProvider>
+            <RouterProvider router={router} />
+          </RoleProvider>
+        </AnalysisDataProvider>
+      </AnalysisProvider>
+    </QueryClientProvider>
   </React.StrictMode>,
 );

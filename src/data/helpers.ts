@@ -1,32 +1,11 @@
 import type {
-  InsightCategory,
-  Issue,
-  Journey,
-  Screen,
-  Severity,
-  TestScenario,
-  TestStatus,
-  JourneyStatus,
   FaultDomain,
+  InsightCategory,
+  JourneyStatus,
   LogLevel,
+  Severity,
+  TestStatus,
 } from "../types";
-import { insights, issues, journeys, screens, tests } from "./mockData";
-
-export { getInvestigation } from "./investigations";
-
-export const getScreen = (id: string): Screen | undefined =>
-  screens.find((s) => s.id === id);
-
-export const getJourney = (id: string): Journey | undefined =>
-  journeys.find((j) => j.id === id);
-
-export const getTest = (id: string): TestScenario | undefined =>
-  tests.find((t) => t.id === id);
-
-export const getIssue = (id: string): Issue | undefined =>
-  issues.find((i) => i.id === id);
-
-export const getInsight = (id: string) => insights.find((i) => i.id === id);
 
 export const testStatusLabel: Record<TestStatus, string> = {
   pass: "Passed",

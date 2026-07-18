@@ -1,6 +1,7 @@
 import { Play, Pause, SkipBack, Video, AlertOctagon, MousePointerClick } from "lucide-react";
 import type { Replay } from "../../types";
-import { getScreen, formatClock } from "../../data/helpers";
+import { formatClock } from "../../data/helpers";
+import { useAnalysisData } from "../../context/AnalysisDataContext";
 import { ScreenshotPlaceholder } from "../ScreenshotPlaceholder";
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export function ReplayPlayer({ replay, playheadMs, playing, onTogglePlay, onSeek }: Props) {
+  const { getScreen } = useAnalysisData();
   if (replay.videoUrl) {
     return (
       <div className="card overflow-hidden">

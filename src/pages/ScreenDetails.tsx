@@ -19,7 +19,7 @@ import { JourneyStatusBadge, TestStatusBadge } from "../components/StatusBadge";
 import { SeverityBadge } from "../components/SeverityBadge";
 import { ScreenshotPlaceholder } from "../components/ScreenshotPlaceholder";
 import { NotFound } from "./NotFound";
-import { getIssue, getScreen, getTest } from "../data/helpers";
+import { useAnalysisData } from "../context/AnalysisDataContext";
 
 const elementIcon: Record<ElementType, typeof Type> = {
   button: MousePointerClick,
@@ -34,6 +34,7 @@ const elementIcon: Record<ElementType, typeof Type> = {
 
 export function ScreenDetails() {
   const { id } = useParams();
+  const { getScreen, getIssue, getTest } = useAnalysisData();
   const screen = id ? getScreen(id) : undefined;
   if (!screen) return <NotFound />;
 

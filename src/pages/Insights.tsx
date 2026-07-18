@@ -14,8 +14,8 @@ import {
 import { PageHeader } from "../components/PageHeader";
 import { SeverityBadge } from "../components/SeverityBadge";
 import { AiBadge } from "../components/StatusBadge";
-import { insights } from "../data/mockData";
-import { getJourney, getScreen, insightCategoryLabel, severityRank } from "../data/helpers";
+import { insightCategoryLabel, severityRank } from "../data/helpers";
+import { useAnalysisData } from "../context/AnalysisDataContext";
 import type { InsightCategory } from "../types";
 
 const categoryIcon: Record<InsightCategory, typeof PackageX> = {
@@ -37,6 +37,7 @@ const order: InsightCategory[] = [
 ];
 
 export function Insights() {
+  const { insights, getJourney, getScreen } = useAnalysisData();
   const [active, setActive] = useState<InsightCategory | "all">("all");
 
   const grouped = useMemo(() => {

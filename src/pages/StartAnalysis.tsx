@@ -12,7 +12,10 @@ import {
   ShieldAlert,
 } from "lucide-react";
 import type { ExploreOptions } from "../types";
-import { appSummary } from "../data/mockData";
+import { useAnalysisData } from "../context/AnalysisDataContext";
+import { useCreateAnalysis } from "../hooks/mutations";
+import { isSupabaseConfigured } from "../lib/supabase";
+import { SupabaseSetupBanner } from "../components/SupabaseSetupBanner";
 
 const steps = [
   { icon: Plug, text: "AI connects to the application" },
@@ -31,16 +34,30 @@ const defaultOptions: ExploreOptions = {
 
 export function StartAnalysis() {
   const navigate = useNavigate();
+  const { appSummary } = useAnalysisData();
+  const createAnalysis = useCreateAnalysis();
   const [target, setTarget] = useState(appSummary.appUrl);
 
-  function start() {
+  async function start() {
     const value = target.trim();
     if (!value) return;
+
+    if (isSupabaseConfigured) {
+      try {
+        await createAnalysis.mutateAsync({ appUrl: value });
+      } catch (err) {
+        console.error(err);
+        alert("Could not create analysis. Check Supabase setup and try again.");
+        return;
+      }
+    }
+
     navigate("/exploring", { state: { target: value, options: defaultOptions } });
   }
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-50 text-slate-800">
+      <SupabaseSetupBanner />
       {/* subtle brand wash at the top */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-[radial-gradient(60%_100%_at_50%_0%,rgba(51,102,255,0.10),transparent_70%)]"
@@ -82,8 +99,8 @@ export function StartAnalysis() {
           </div>
 
           <button
-            onClick={start}
-            disabled={!target.trim()}
+            onClick={() => void start()}
+            disabled={!target.trim() || createAnalysis.isPending}
             className="btn-primary group mt-3 w-full py-3.5"
           >
             Start Exploration

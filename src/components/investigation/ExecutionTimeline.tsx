@@ -1,6 +1,7 @@
 import { ChevronRight, Navigation, MousePointerClick, CheckCircle2, XCircle, GitCommitHorizontal } from "lucide-react";
 import type { TimelineKind, TimelineStep } from "../../types";
-import { getScreen, formatClock } from "../../data/helpers";
+import { formatClock } from "../../data/helpers";
+import { useAnalysisData } from "../../context/AnalysisDataContext";
 
 interface Props {
   timeline: TimelineStep[];
@@ -23,6 +24,7 @@ const kindTone: Record<TimelineKind, string> = {
 };
 
 export function ExecutionTimeline({ timeline, playheadMs, onSeek }: Props) {
+  const { getScreen } = useAnalysisData();
   const activeIndex = timeline.reduce((acc, s, i) => (s.tMs <= playheadMs ? i : acc), 0);
 
   return (

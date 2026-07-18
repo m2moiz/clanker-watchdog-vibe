@@ -13,16 +13,12 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PageHeader } from "../components/PageHeader";
-import {
-  explorationLog,
-  explorationScreenOrder,
-  screens,
-} from "../data/mockData";
-import { getScreen } from "../data/helpers";
+import { useAnalysisData } from "../context/AnalysisDataContext";
 
 const TICK_MS = 480;
 
 export function Exploration() {
+  const { explorationLog, explorationScreenOrder, screens, getScreen } = useAnalysisData();
   const [step, setStep] = useState(0);
   const [running, setRunning] = useState(true);
   const logEndRef = useRef<HTMLDivElement>(null);
