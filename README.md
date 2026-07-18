@@ -19,6 +19,16 @@
 
 **Mistral's open-source CLI coding assistant.**
 
+> [!NOTE]
+> The Clanker Watchdog hackathon project is published as two independent
+> histories: the [frontend branch](https://github.com/m2moiz/clanker-watchdog-vibe/tree/frontend)
+> contains the Vite/React dashboard, and the
+> [backend branch](https://github.com/m2moiz/clanker-watchdog-vibe/tree/backend)
+> contains the browser-verification service. The branch commit metadata was
+> rewritten with TimelineForge into the July 18, 2026, 10:00–17:45
+> Europe/Paris hackathon window. This `main` branch preserves the Mistral Vibe
+> base project.
+
 Mistral Vibe is a command-line coding assistant powered by Mistral's models. It provides a conversational interface to your codebase, allowing you to use natural language to explore, modify, and interact with your projects through a powerful set of tools.
 
 > [!WARNING]
