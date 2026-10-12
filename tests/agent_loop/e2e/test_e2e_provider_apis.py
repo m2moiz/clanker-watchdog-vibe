@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Iterator
+from collections.abc import Callable, Generator, Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
 
@@ -70,7 +70,7 @@ PROVIDER_SCENARIOS: list[ProviderScenario] = [
 @contextmanager
 def open_provider_api(
     api_cls: type[ProviderAPI], request: pytest.FixtureRequest
-) -> Iterator[ProviderAPI]:
+) -> Generator[ProviderAPI, None, None]:
     """Instantiate a provider API and setup respx routers and monkeypatches"""
     api_cls.setup_monkeypatch(request.getfixturevalue("monkeypatch"))
     with respx.mock(base_url=api_cls.base_url, assert_all_called=False) as router:
