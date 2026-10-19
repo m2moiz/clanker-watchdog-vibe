@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Generator
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 
@@ -149,7 +149,7 @@ class Checkpointer:
         self._open = None
 
     @contextmanager
-    def atomic(self) -> Iterator[None]:
+    def atomic(self) -> Generator[None, None, None]:
         """Roll the log back to its prior state if the body raises, so a review
         decision is only durably committed once its disk persistence succeeds.
         """
