@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from collections.abc import AsyncIterator, Iterator
+from collections.abc import AsyncGenerator, Iterator
 import contextlib
 from contextlib import asynccontextmanager
 from functools import lru_cache
@@ -230,7 +230,7 @@ def _get_lock(path: Path) -> asyncio.Lock:
 
 
 @asynccontextmanager
-async def file_write_lock(path: Path) -> AsyncIterator[None]:
+async def file_write_lock(path: Path) -> AsyncGenerator[None, None]:
     async with _get_lock(path):
         yield
 
