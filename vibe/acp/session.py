@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from collections.abc import AsyncIterator, Coroutine
+from collections.abc import AsyncGenerator, Coroutine
 from contextlib import asynccontextmanager
 from typing import Any
 
@@ -36,7 +36,7 @@ class AcpSessionLoop:
         return self._prompt_task
 
     @asynccontextmanager
-    async def mutating(self, operation: str) -> AsyncIterator[None]:
+    async def mutating(self, operation: str) -> AsyncGenerator[None, None]:
         """Run a session-mutating operation under the session lock, rejecting
         it while a prompt turn is in flight (the turn does not hold the lock).
         """
@@ -48,7 +48,7 @@ class AcpSessionLoop:
             yield
 
     @asynccontextmanager
-    async def reading(self) -> AsyncIterator[None]:
+    async def reading(self) -> AsyncGenerator[None, None]:
         """Serialize a read against mutating operations without rejecting it
         while a prompt turn is in flight.
         """

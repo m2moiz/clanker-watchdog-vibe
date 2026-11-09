@@ -39,7 +39,7 @@ class ConfigOptionKind(StrEnum):
 
 
 class ConfigApp(Container):
-    """Settings panel with navigatable option picker."""
+    """Settings panel with navigable option picker."""
 
     can_focus_children = True
 

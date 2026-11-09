@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Generator
 from contextlib import contextmanager
 from datetime import datetime
 import random
@@ -240,7 +240,7 @@ class LoadingWidget(SpinnerMixin, Static):
 
 
 @contextmanager
-def paused_timer(loading_widget: LoadingWidget | None) -> Iterator[None]:
+def paused_timer(loading_widget: LoadingWidget | None) -> Generator[None, None, None]:
     if loading_widget:
         loading_widget.pause_timer()
     try:

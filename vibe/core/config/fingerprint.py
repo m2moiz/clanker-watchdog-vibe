@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Generator
 from contextlib import contextmanager
 import hashlib
 import json
@@ -14,7 +14,7 @@ from vibe.core.config.types import ConcurrencyConflictError
 
 
 @contextmanager
-def capture_stable_file(path: Path) -> Iterator[tuple[IO[bytes], str]]:
+def capture_stable_file(path: Path) -> Generator[tuple[IO[bytes], str], None, None]:
     """Yield a file and fingerprint, raising if the path changes before exit."""
     with path.open("rb") as file:
         before = create_file_fingerprint(file)
